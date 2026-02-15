@@ -16,13 +16,29 @@ price = data['Close'].reset_index()
 price.columns = ["Date"] + column_names
 
 if os.path.exists(filepath):
+
     existing = pd.read_excel(filepath)
-    combined = existing.set_index("Date").combine_first(price.set_index("Date")).reset_index()
- 
+
+    combined = (
+        existing.set_index("Date")
+        .combine_first(price.set_index("Date"))
+        .reset_index()
+        )
+
+    combined = (
+        combined.drop_duplicates(subset="Date", keep="first")
+        .dropna(subset=["Date"] + column_names)
+        .reset_index(drop=True)
+    )
+
 else:
     combined = price
 
-combined["Date"] = pd.to_datetime(combined["Date"]).dt.strftime("%Y-%m-%d")
+combined[column_names] = combined[column_names].round(0).astype("Int64")
+combined["Date"] = pd.to_datetime(combined["Date"])
+combined = combined.sort_values(by="Date", ascending=False).reset_index(drop=True)
+combined["Date"] = combined["Date"].dt.strftime("%Y-%m-%d")
+
 combined.to_excel(filepath, index=False)
 
 st.title("Stock Prediction Dashboard")
