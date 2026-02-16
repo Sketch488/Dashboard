@@ -1,46 +1,24 @@
 import streamlit as st
+import subprocess
 import pandas as pd
-import matplotlib.pyplot as plt
-import plotly.express as px
+from numpy.random import default_rng
 
-import yfinance as yf
-import os
+subprocess.run(["python", "data to excel.py"])
+# subprocess.run(["python", "prediction.py"])
+# subprocess.run(["python", "results to excel.py"])
+# subprocess.run(["python", ".py"])
 
-tickers = ["5253.T", "5032.T"]
-column_names = ["ANYCOLOR Inc", "COVER Corperation"]
-
-filepath = "StockInfo.xlsx"
-
-data = yf.download(tickers, period= "6mo", interval="1d")
-price = data['Close'].reset_index()
-price.columns = ["Date"] + column_names
-
-if os.path.exists(filepath):
-
-    existing = pd.read_excel(filepath)
-
-    combined = (
-        existing.set_index("Date")
-        .combine_first(price.set_index("Date"))
-        .reset_index()
-        )
-
-    combined = (
-        combined.drop_duplicates(subset="Date", keep="first")
-        .dropna(subset=["Date"] + column_names)
-        .reset_index(drop=True)
-    )
-
-else:
-    combined = price
-
-combined[column_names] = combined[column_names].round(0).astype("Int64")
-combined["Date"] = pd.to_datetime(combined["Date"])
-combined = combined.sort_values(by="Date", ascending=False).reset_index(drop=True)
-combined["Date"] = combined["Date"].dt.strftime("%Y-%m-%d")
-
-combined.to_excel(filepath, index=False)
+Anycolor_data = pd.read_excel("ANYCOLOR Inc.xlsx")
+Cover_data = pd.read_excel("COVER Corporation.xlsx")
 
 st.title("Stock Prediction Dashboard")
 
-st.write(combined)
+ANYCOLOR, COVER = st.columns(2)
+
+with ANYCOLOR:
+    if st.button("ANYCOLOR Inc."):
+        st.write("ANYCOLOR Inc:", Anycolor_data)
+
+with COVER:
+    if st.button("COVER Corporation"):
+       st.write("COVER Corporation:", Cover_data)
