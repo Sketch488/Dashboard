@@ -31,12 +31,12 @@ def write_company_file(ticker, company_name):
 
     for col in ["Open", "High", "Low", "Close"]:
         combined[col] = combined[col].round(0).astype("Int64")
-    combined["Volume"] = combined["Volume"].round(0).astype("Int64")
-    combined["Date"] = pd.to_datetime(combined["Date"])
-    combined = combined.sort_values(by="Date", ascending=False).reset_index(drop=True)
-    combined["Date"] = combined["Date"].dt.strftime("%Y-%m-%d")
+        combined["Volume"] = combined["Volume"].round(0).astype("Int64")
+        combined["Date"] = pd.to_datetime(combined["Date"])
+        combined = combined.sort_values(by="Date", ascending=False).reset_index(drop=True)
+        combined["Date"] = combined["Date"].dt.strftime("%Y-%m-%d")
 
-    combined.to_excel(filepath, index=False)
+        combined.to_excel(filepath, index=False)
     return combined
 
 for ticker, name in zip(tickers, company_names):
