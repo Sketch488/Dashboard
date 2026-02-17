@@ -3,7 +3,7 @@ import pandas as pd
 import yfinance as yf
 
 tickers = ["5253.T", "5032.T"]
-company_names = ["ANYCOLOR Inc", "COVER Corporation"]
+company_names = ["COVER Corporation", "ANYCOLOR Inc"]
 fields = ["Open", "High", "Low", "Close", "Volume"]
 
 data = yf.download(tickers, period="6mo", interval="1d")
