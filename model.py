@@ -4,7 +4,7 @@ from sklearn.multioutput import MultiOutputRegressor
 from xgboost import XGBRegressor
 
 # Config
-file = "COVER Corporation.xlsx"
+file = "ANYCOLOR Inc.xlsx"
 forecast_days = 7
 n_lags = 10
 target_cols = ["Open", "High", "Low", "Close", "Volume"]
