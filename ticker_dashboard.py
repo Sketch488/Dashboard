@@ -34,6 +34,10 @@ INTERVAL_UNIT_MAP = {
     "Months": "mo",
 }
 
+PREDICTION_INTERVAL_UNIT_MAP = {
+    "Days": "d"
+}
+
 # Date and Interval periods
 t1, t2= st.columns(2)
 with t1:
@@ -106,14 +110,7 @@ if search_button:
 
         st.dataframe(display_df, height=250)
 
-        csv_data = display_df.to_csv(index=False).encode("utf-8")
-
-        st.download_button(
-            label="Download File",
-            data=csv_data,
-            file_name=f"{symbol}_{period}_{interval}.csv",
-            mime="text/csv",
-        )
+        temp_csv_data = display_df.to_csv(f"{symbol}_temp", index=False)
 else:
     st.info("Enter inputs and click Search")
 
@@ -123,8 +120,10 @@ if st.session_state.is_valid_ticker:
     st.header("Prediction Section")
 
     st.markdown("Prediction Period", help = "How many days to predict")
-    prediction_value = st.number_input()
+    x1, x2 = st.columns(2)
+    with x1:
+        prediction_value = st.number_input("Value", min_value=1, max_value=10, step=1, label_visibility="collapsed")
 
     predict_button = st.button("Predict")
     if predict_button:
-        st.write("Prediction innit")
+        st.write("Model Runs Here")
